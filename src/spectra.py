@@ -37,17 +37,17 @@ def verify_wait_me(browser):
         raise ("Loading took too much time!")
 
 
-def wait_for_element_by_id(browser, selector):
+def wait_for_element_by_id(browser, selector, wait_delay=WAIT_DELAY):
     try:
-        WebDriverWait(browser, WAIT_DELAY).until(
+        WebDriverWait(browser, wait_delay).until(
             EC.presence_of_element_located((By.ID, selector)))
     except TimeoutException:
         raise ("Loading took too much time!")
 
 
-def wait_for_element_by_xpath(browser, selector):
+def wait_for_element_by_xpath(browser, selector, wait_delay=WAIT_DELAY):
     try:
-        WebDriverWait(browser, WAIT_DELAY).until(
+        WebDriverWait(browser, wait_delay).until(
             EC.presence_of_element_located((By.XPATH, selector)))
     except TimeoutException:
         raise ("Loading took too much time!")
@@ -58,7 +58,8 @@ def login(browser, config):
     browser.get(url)
     browser.maximize_window()
 
-    wait_for_element_by_id(browser, 'txtUserName')
+    # long wait in case of VPN/organization security
+    wait_for_element_by_id(browser, 'txtUserName', WAIT_DELAY*5)
 
     element = browser.find_element(By.ID, "txtUserName")
     element.send_keys(config["username"])
@@ -130,7 +131,7 @@ def main():
     for date in dates:
         apply(browser, date, config)
         time.sleep(10)
-    
+
     time.sleep(10)
 
     print("clicked")
