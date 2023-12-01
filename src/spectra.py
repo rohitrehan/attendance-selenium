@@ -80,6 +80,7 @@ def apply(browser, date, config):
 
     verify_wait_me(browser)
     wait_for_element_by_id(browser, "ButtonSave")
+    verify_wait_me(browser)
 
     time.sleep(5)
 
