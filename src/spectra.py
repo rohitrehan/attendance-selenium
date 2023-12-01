@@ -78,6 +78,7 @@ def apply(browser, date, config):
     url = f"{config['url']}/iApp/MVC/OutDoorDuty/Index?MenuId=69&CallFrom=PortalSheet&isPopup=Y&trans=ADDOD&id=811,{date},0,,0,0.00,0.00,0.00,,"
     browser.get(url)
 
+    verify_wait_me(browser)
     wait_for_element_by_id(browser, "ButtonSave")
 
     time.sleep(5)
