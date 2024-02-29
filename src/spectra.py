@@ -32,7 +32,7 @@ def verify_wait_me(browser):
         time.sleep(3)
         WebDriverWait(browser, WAIT_DELAY).until(
             EC.invisibility_of_element((By.CLASS_NAME, "waitMe")))
-        time.sleep(2)
+        time.sleep(1)
     except TimeoutException:
         raise ("Loading took too much time!")
 
@@ -98,7 +98,9 @@ def apply(browser, date, config):
 
     browser.find_element(By.ID, "s2id_0RG").click()
     browser.find_element(By.XPATH, "//li/div[contains(.,'General')]").click()
+    verify_wait_me(browser)
     browser.find_element(By.ID, "0reason").send_keys(config['duty_reason'])
+    verify_wait_me(browser)
     browser.find_element(By.ID, "ButtonSave").click()
     time.sleep(10)
 
@@ -117,26 +119,32 @@ def main():
     time.sleep(5)
 
     elements = browser.find_elements(
-        By.XPATH, "//td[@role='gridcell'][@aria-describedby='portalgrid_Status'][@style='color: rgb(255, 0, 0);']")
+        By.XPATH, "//td[@role='gridcell'][@aria-describedby='portalgrid_Status'][@style='color: rgb(255, 0, 0);'][text() = 'AA']")
     print(len(elements))
 
     dates = []
     for ele in elements:
         parent = ele.find_element(By.XPATH, "..")
-        ele = parent.find_element(
-            By.XPATH, "td[@aria-describedby='portalgrid_Out Door Duty']")
-        if (ele.get_attribute('style') == 'background-color: rgb(0, 0, 255);'):
-            continue
+
+        try:
+            tdEle = parent.find_element(
+                By.XPATH, "td[@style='background-color: rgb(0, 0, 255);']")
+            if tdEle is not None:
+                continue
+        except Exception:
+            pass
+
         date = parent.text.split()[0].strip()
         dates.append(date)
 
     for date in dates:
+        # print(f"Applying attendance for: {date}")
         apply(browser, date, config)
         time.sleep(10)
 
     time.sleep(10)
 
-    print("clicked")
+    print("completed")
     browser.quit()
 
 
