@@ -1,7 +1,7 @@
 import os
 from selenium import webdriver
 from selenium.webdriver.firefox.service import Service
-from selenium.webdriver.support.ui import WebDriverWait, Select
+from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 from selenium.common.exceptions import TimeoutException
@@ -11,10 +11,11 @@ CURRENT_DIR = os.path.dirname(os.path.abspath(__file__))
 WAIT_DELAY = 50  # seconds
 
 
-def get_browser() -> webdriver:
+def get_browser() -> webdriver.Firefox:
     driver_path = os.path.join(CURRENT_DIR, "..", "drivers", "geckodriver.exe")
     service = Service(executable_path=driver_path)
     options = webdriver.FirefoxOptions()
+    options.binary_location = "C:\\Program Files\\Mozilla Firefox\\firefox.exe"
     return webdriver.Firefox(service=service, options=options)
 
 
