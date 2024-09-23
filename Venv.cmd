@@ -8,6 +8,7 @@ IF %ERRORLEVEL% NEQ 0 EXIT /B
 call .venv\Scripts\activate.bat
 
 python --version
-python -m pip install pip-tools
-pip-compile requirements.in -o requirements.txt
+PipCompileRequirements.cmd
+
 python -m pip install -r requirements.txt
+
