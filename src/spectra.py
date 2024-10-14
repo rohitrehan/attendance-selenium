@@ -118,7 +118,6 @@ def main():
 
     elements = browser.find_elements(
         By.XPATH, "//td[@role='gridcell'][@aria-describedby='portalgrid_Status'][@style='color: rgb(255, 0, 0);']")
-    print(len(elements))
 
     dates = []
     for ele in elements:
@@ -127,9 +126,16 @@ def main():
             By.XPATH, "td[@aria-describedby='portalgrid_Out Door Duty']")
         if (ele.get_attribute('style') == 'background-color: rgb(0, 0, 255);'):
             continue
+        
+        leave_ele = parent.find_element(
+            By.XPATH, "td[@aria-describedby='portalgrid_Leave']")
+        if (leave_ele.get_attribute('style') == 'background-color: rgb(0, 0, 255);'):
+            continue
+
         date = parent.text.split()[0].strip()
         dates.append(date)
 
+    print(f"Applying attendance for {len(dates)} days")
     for date in dates:
         apply(browser, date, config)
         time.sleep(10)
